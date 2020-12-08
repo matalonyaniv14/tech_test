@@ -19,5 +19,3 @@ class AuthorizationService
     JsonWebToken.verify(http_token)
   end
 end
-
-# a

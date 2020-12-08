@@ -37,9 +37,10 @@ body: {
 
 
  get started
- 1. rails db:create
- 2. rails db:migrate
- 3. rais db:seed
+ 1. clone the repo
+ 2. git remote add heroku https://git.heroku.com/limitless-tor-81828.git OR heroku git:remote -a limitless-tor-81828
+ 3. heroku run rails db:seed
+ 
 
  I created 3 simple rake tasks so you can update more easily during testing
 
