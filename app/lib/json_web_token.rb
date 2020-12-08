@@ -6,9 +6,9 @@ class JsonWebToken
     JWT.decode(token, nil,
                true,
                algorithm: "RS256",
-               iss: ENV[:DOMAIN],
+               iss: ENV["DOMAIN"],
                verify_iss: true,
-               aud: ENV[:API_IDENTIFIER],
+               aud: ENV["API_IDENTIFIER"],
                verify_aud: true) do |header|
       jwks_hash[header["kid"]]
     end
