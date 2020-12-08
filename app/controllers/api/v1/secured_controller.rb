@@ -4,7 +4,7 @@ class Api::V1::SecuredController < ActionController::API
 
   def request_session
     render json: {
-      domain: Rails.application.credentials.auth0[:domain],
+      domain: ENV["DOMAIN"],
       clientId: "J7rHoji5WHs8ZIK3tVGQOG50RiU4hXWY",
     }
   end
