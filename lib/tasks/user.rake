@@ -1,6 +1,6 @@
 # require_relative "../../config/application"
-base_url = "https://limitless-tor-81828.herokuapp.com"
-content_type = "Content-Type: application/json"
+BASE_URL = "https://limitless-tor-81828.herokuapp.com"
+CONTENT_TYPE = "Content-Type: application/json"
 
 def update_user(sub_type, user_id, token)
   `curl -X PUT -H "#{content_type}" -H "Authorization: bearer #{token}" -d '{ "subscription_type":"#{sub_type}"}' #{base_url}/api/v1/users/#{user_id}`
