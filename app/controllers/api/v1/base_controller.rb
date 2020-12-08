@@ -20,11 +20,9 @@ class Api::V1::BaseController < ActionController::API
   end
 
   def set_current_user
-    # token = retrieve_token
     @user ||= User.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    raise Pundit::NotAuthorizedError unless @user
-    # && @user.token == token
+    raise Pundit::NotAuthorizedError
   end
 
   def pundit_user

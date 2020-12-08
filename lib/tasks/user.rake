@@ -1,27 +1,27 @@
-require_relative "../../config/application"
+# require_relative "../../config/application"
+base_url = "https://limitless-tor-81828.herokuapp.com"
+content_type = "Content-Type: application/json"
+
+def update_user(sub_type, user_id, token)
+  `curl -X PUT -H "#{content_type}" -H "Authorization: bearer #{token}" -d '{ "subscription_type":"#{sub_type}"}' #{base_url}/api/v1/users/#{user_id}`
+end
 
 namespace :user do
-  base_url = "https://limitless-tor-81828.herokuapp.com"
-  auth_headers = "Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFkSjFmWTA2WlhUTlJoSW5DbGl3aSJ9.eyJpc3MiOiJodHRwczovL2Rldi15dG84aGVsOC5ldS5hdXRoMC5jb20vIiwic3ViIjoiSjdySG9qaTVXSHM4WklLM3RWR1FPRzUwUmlVNGhYV1lAY2xpZW50cyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlhdCI6MTYwNzQyMTQzOSwiZXhwIjoxNjA3NTA3ODM5LCJhenAiOiJKN3JIb2ppNVdIczhaSUszdFZHUU9HNTBSaVU0aFhXWSIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.JPmZ8OFiiDYVhnJ63lk1vIKxWhOrLc-aRmn8yn34_H8-VYKE823Hh_CcbP56HseHdLJqG7-8O_tw4cicq2kTCwiJDjZkygxUbhCIweiAxUpubZqbIBZl2RQz_osjqJUQOie_5PFmrNqQhOMTMavA9gAoAaIldlstSYTidt_rC1-zpsOBud0MJulo6NRRfBQMs9mD5UnsrAGgALoo9F7Jj950Q1VrgoxG-UwvOJpWNZmAS1qzt3GervfSQYrNYl_C7ozr4DeqfgBuwxpLePyhpwqB3Xk3Tzwbg7jiYDDvbHCk2_R36E9hjrBn11ENG7l7BGa5bfNisKfHETtEUwemEQ"
-  content_type = "Content-Type: application/json"
-
   task set_user_basic: :environment do
+    token = GenerateToken.perform
     user = User.first
-    puts `curl -X PUT -H "#{content_type}" -H "#{auth_headers}" -d '{ "subscription_type":"basic"}' #{base_url}/api/v1/users/#{user.id}`
+    puts update_user("basic", user.id, token[:access_token])
   end
 
   task set_user_premium: :environment do
+    token = GenerateToken.perform
     user = User.first
-    puts `curl -X PUT -H "#{content_type}" -H "#{auth_headers}" -d '{ "subscription_type":"premium"}' #{base_url}/api/v1/users/#{user.id}`
+    puts update_user("premium", user.id, token[:access_token])
   end
 
   task set_user_professional: :environment do
+    token = GenerateToken.perform
     user = User.first
-    puts `curl -X PUT -H "#{content_type}" -H "#{auth_headers}" -d '{ "subscription_type":"professional"}' #{base_url}/api/v1/users/#{user.id}`
+    puts update_user("professional", user.id, token[:access_token])
   end
 end
-
-#  curl -X POST -H "Content-Type: application/json" -H "Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFkSjFmWTA2WlhUTlJoSW5DbGl3aSJ9.eyJpc3MiOiJodHRwczovL2Rldi15dG84aGVsOC5ldS5hdXRoMC5jb20vIiwic3ViIjoiSjdySG9qaTVXSHM4WklLM3RWR1FPRzUwUmlVNGhYV1lAY2xpZW50cyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlhdCI6MTYwNzQyMzYxMSwiZXhwIjoxNjA3NTEwMDExLCJhenAiOiJKN3JIb2ppNVdIczhaSUszdFZHUU9HNTBSaVU0aFhXWSIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.mnJZpfJHYAUbtOzC7ToSezZFmmks7TjrRFxf0utHxx3BXncNv0VcoHlHLYl5dujaiWtAF4rIixHzLGg2H9tB4X1GIOGpKLv2-kGoDybKjcewUcWOHHOzJU_XQk7gIYuQwPAFOuquiO80UGqX7XZkIDsCkM35snNyTUQN_7u72fvayr_7jwnrBfLcNCZwsCtpQ8EbHp7BQshcTYozFlfQQWbjAoXja8yHcXCOFVoX9BXb4bTyYg3V12jouJxdd1ifwWofCMRmHuhs-qNJVF2hQAm38Cjf6vqTt-ai5LKxgQMLxayppH4QxpaJX0czd2uSXLkLsBjbJObt9SatNBLZnA" -d '{"email":"cdosobc", "subscription_type":"premium"}' #{base_url}/api/v1/users
-#  curl -X PUT -H "Content-Type: application/json" -H "Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFkSjFmWTA2WlhUTlJoSW5DbGl3aSJ9.eyJpc3MiOiJodHRwczovL2Rldi15dG84aGVsOC5ldS5hdXRoMC5jb20vIiwic3ViIjoiSjdySG9qaTVXSHM4WklLM3RWR1FPRzUwUmlVNGhYV1lAY2xpZW50cyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlhdCI6MTYwNzQyMTQzOSwiZXhwIjoxNjA3NTA3ODM5LCJhenAiOiJKN3JIb2ppNVdIczhaSUszdFZHUU9HNTBSaVU0aFhXWSIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.JPmZ8OFiiDYVhnJ63lk1vIKxWhOrLc-aRmn8yn34_H8-VYKE823Hh_CcbP56HseHdLJqG7-8O_tw4cicq2kTCwiJDjZkygxUbhCIweiAxUpubZqbIBZl2RQz_osjqJUQOie_5PFmrNqQhOMTMavA9gAoAaIldlstSYTidt_rC1-zpsOBud0MJulo6NRRfBQMs9mD5UnsrAGgALoo9F7Jj950Q1VrgoxG-UwvOJpWNZmAS1qzt3GervfSQYrNYl_C7ozr4DeqfgBuwxpLePyhpwqB3Xk3Tzwbg7jiYDDvbHCk2_R36E9hjrBn11ENG7l7BGa5bfNisKfHETtEUwemEQ" -d '{ "subscription_type":"premium"}' #{base_url}/api/v1/users/22
-# curl  -H "Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFkSjFmWTA2WlhUTlJoSW5DbGl3aSJ9.eyJpc3MiOiJodHRwczovL2Rldi15dG84aGVsOC5ldS5hdXRoMC5jb20vIiwic3ViIjoiSjdySG9qaTVXSHM4WklLM3RWR1FPRzUwUmlVNGhYV1lAY2xpZW50cyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlhdCI6MTYwNzQyMTQzOSwiZXhwIjoxNjA3NTA3ODM5LCJhenAiOiJKN3JIb2ppNVdIczhaSUszdFZHUU9HNTBSaVU0aFhXWSIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.JPmZ8OFiiDYVhnJ63lk1vIKxWhOrLc-aRmn8yn34_H8-VYKE823Hh_CcbP56HseHdLJqG7-8O_tw4cicq2kTCwiJDjZkygxUbhCIweiAxUpubZqbIBZl2RQz_osjqJUQOie_5PFmrNqQhOMTMavA9gAoAaIldlstSYTidt_rC1-zpsOBud0MJulo6NRRfBQMs9mD5UnsrAGgALoo9F7Jj950Q1VrgoxG-UwvOJpWNZmAS1qzt3GervfSQYrNYl_C7ozr4DeqfgBuwxpLePyhpwqB3Xk3Tzwbg7jiYDDvbHCk2_R36E9hjrBn11ENG7l7BGa5bfNisKfHETtEUwemEQ" #{base_url}/api/v1/users/22/course_modules
-# curl -X POST -H "Content-Type: application/json" -H "Authorization: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkFkSjFmWTA2WlhUTlJoSW5DbGl3aSJ9.eyJpc3MiOiJodHRwczovL2Rldi15dG84aGVsOC5ldS5hdXRoMC5jb20vIiwic3ViIjoiSjdySG9qaTVXSHM4WklLM3RWR1FPRzUwUmlVNGhYV1lAY2xpZW50cyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImlhdCI6MTYwNzQyMzYxMSwiZXhwIjoxNjA3NTEwMDExLCJhenAiOiJKN3JIb2ppNVdIczhaSUszdFZHUU9HNTBSaVU0aFhXWSIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.mnJZpfJHYAUbtOzC7ToSezZFmmks7TjrRFxf0utHxx3BXncNv0VcoHlHLYl5dujaiWtAF4rIixHzLGg2H9tB4X1GIOGpKLv2-kGoDybKjcewUcWOHHOzJU_XQk7gIYuQwPAFOuquiO80UGqX7XZkIDsCkM35snNyTUQN_7u72fvayr_7jwnrBfLcNCZwsCtpQ8EbHp7BQshcTYozFlfQQWbjAoXja8yHcXCOFVoX9BXb4bTyYg3V12jouJxdd1ifwWofCMRmHuhs-qNJVF2hQAm38Cjf6vqTt-ai5LKxgQMLxayppH4QxpaJX0czd2uSXLkLsBjbJObt9SatNBLZnA" -d '{"course_module_id":"10"}' #{base_url}/api/v1/users/27/user_course_modules
