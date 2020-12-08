@@ -1,0 +1,2 @@
+class VideoCourse < Course
+end

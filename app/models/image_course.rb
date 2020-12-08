@@ -1,0 +1,2 @@
+class ImageCourse < Course
+end
